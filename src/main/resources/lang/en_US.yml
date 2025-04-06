@@ -1,0 +1,25 @@
+#####
+# PictureLogin 
+# English (US) Language File
+
+# Prefix can be used with %prefix%
+# New Line inserted with %new_line%
+prefix: "&aPictureLogin &7»"
+
+# Command Messages
+reload_config: "%prefix% Configuration successfully reloaded."
+reload_config_help: "%prefix% &a/picturelogin reload &7to reload the configuration file."
+no_permission: "%prefix% &cYou do not have permission to do this!"
+version_info: "%prefix% Running version &a%version%&7."
+language_changed: "%prefix% Language changed to &a%language%&7."
+
+# Misc
+update_available: "New update available! Current Version: %current% New Version: %new%"
+update_available_download: "Download at https://github.com/Lythrilla/PictureLogin-master"
+
+# Error Messages (Printed in console.)
+error_reload_config: "Could not access the configuration file."
+error_retrieving_avatar: "Could not retrieve avatar from URL. Reverting to fallback image."
+error_fallback_img: "Could not load fallback image."
+error_update_check: "Could not check for update."
+error_language_not_found: "Language file %language% not found. Using default language." 

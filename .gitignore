@@ -1,0 +1,57 @@
+# IntelliJ
+.idea/
+*.iml
+out/
+src/META-INF/
+src/main/java/META-INF/
+
+# Maven
+target/
+dependency-reduced-pom.xml
+
+# Compiled class file
+*.class
+
+# Log file
+*.log
+
+# Package Files
+*.war
+*.nar
+*.ear
+*.zip
+*.tar.gz
+*.rar
+
+# Build directories
+target/
+build/
+out/
+
+# Gradle specific
+.gradle/
+gradle-app.setting
+!gradle-wrapper.jar
+!gradle-wrapper.properties
+.gradletasknamecache
+
+# IDE specific
+.idea/
+*.iml
+*.iws
+*.ipr
+.classpath
+.project
+.settings/
+.vscode/
+*.sublime-workspace
+*.sublime-project
+
+# OS specific
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db

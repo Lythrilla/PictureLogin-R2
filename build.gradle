@@ -1,0 +1,86 @@
+plugins {
+    id 'java'
+    id 'com.github.johnrengelman.shadow' version '7.1.2'
+}
+
+group = 'me.Lythrilla'
+version = 'R2-1.0.0'
+description = 'Display a cool login message with a picture of the players skin.'
+
+System.setProperty("https.protocols", "TLSv1,TLSv1.1,TLSv1.2")
+
+repositories {
+    mavenCentral()
+    maven { 
+        url = 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/' 
+        allowInsecureProtocol = true
+    }
+    maven { 
+        url = 'https://repo.extendedclip.com/content/repositories/placeholderapi/'
+        allowInsecureProtocol = true
+    }
+    maven { 
+        url = 'https://repo.codemc.org/repository/maven-public/' 
+        allowInsecureProtocol = true
+    }
+    maven { 
+        url = 'https://repo.minebench.de/' 
+        allowInsecureProtocol = true
+    }
+    maven {
+        url = 'https://oss.sonatype.org/content/repositories/snapshots/'
+    }
+    maven {
+        url = 'https://s01.oss.sonatype.org/content/repositories/snapshots/'
+    }
+}
+
+dependencies {
+    compileOnly 'org.spigotmc:spigot-api:1.21.5-R0.1-SNAPSHOT'
+    compileOnly 'me.clip:placeholderapi:2.11.6'
+    compileOnly 'fr.xephi:authme:5.5.0-SNAPSHOT'
+    
+    implementation 'net.kyori:adventure-text-minimessage:4.20.0'
+    implementation 'net.kyori:adventure-text-serializer-gson:4.20.0'
+    implementation 'net.kyori:adventure-text-serializer-legacy:4.20.0'
+    implementation 'net.kyori:adventure-platform-bukkit:4.3.4'
+    
+    implementation 'org.bstats:bstats-bukkit:3.0.2'
+    implementation 'de.themoep:minedown:1.6.1-SNAPSHOT'
+}
+
+sourceCompatibility = JavaVersion.VERSION_17
+targetCompatibility = JavaVersion.VERSION_17
+
+processResources {
+    def props = [version: version]
+    inputs.properties props
+    filteringCharset 'UTF-8'
+    filesMatching('plugin.yml') {
+        expand props
+    }
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
+shadowJar {
+    archiveClassifier.set('')
+    archiveBaseName.set('PictureLogin')
+    
+    relocate 'org.bstats', 'me.Lythrilla.picturelogin.libs.bstats'
+    relocate 'com.bobacadodl', 'me.Lythrilla.picturelogin.util'
+    relocate 'de.themoep.minedown', 'me.Lythrilla.picturelogin.libs.minedown'
+    relocate 'net.kyori', 'me.Lythrilla.picturelogin.libs.kyori'
+    
+    minimize {
+        exclude(dependency('net.kyori:.*:.*'))
+    }
+    
+    exclude 'META-INF/**'
+}
+
+build {
+    dependsOn shadowJar
+} 

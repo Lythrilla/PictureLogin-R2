@@ -1,0 +1,25 @@
+#####
+# PictureLogin 
+# 简体中文语言文件
+
+# 可使用 %prefix% 作为前缀
+# 使用 %new_line% 插入新行
+prefix: "&aPictureLogin &7»"
+
+# 命令消息
+reload_config: "%prefix% 配置已成功重新加载。"
+reload_config_help: "%prefix% &a/picturelogin reload &7重新加载配置文件。"
+no_permission: "%prefix% &c您没有执行此操作的权限！"
+version_info: "%prefix% 当前运行版本 &a%version%&7。"
+language_changed: "%prefix% 语言已更改为 &a%language%&7。"
+
+# 其他
+update_available: "发现新版本！当前版本: %current% 新版本: %new%"
+update_available_download: "下载地址: https://github.com/Lythrilla/PictureLogin-master"
+
+# 错误消息（控制台输出）
+error_reload_config: "无法访问配置文件。"
+error_retrieving_avatar: "无法从URL获取头像。使用备用图像。"
+error_fallback_img: "无法加载备用图像。"
+error_update_check: "无法检查更新。"
+error_language_not_found: "找不到语言文件 %language%。使用默认语言。" 

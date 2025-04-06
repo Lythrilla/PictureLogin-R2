@@ -1,0 +1,19 @@
+name: PictureLogin
+main: me.Lythrilla.picturelogin.PictureLogin
+api-version: 1.21
+author: lythrilla
+description: 显示带有玩家皮肤图像的炫酷登录消息
+
+version: ${version}
+softdepend: [AuthMe, PlaceholderAPI]
+
+commands:
+  picturelogin:
+    description: PictureLogin插件命令
+permisions:
+  picturelogin.main:
+    default: op
+    description: 允许使用/picturelogin命令
+  picturelogin.show:
+    default: op
+    description: 允许显示登录消息
