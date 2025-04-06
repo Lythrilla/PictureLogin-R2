@@ -1,8 +1,9 @@
 # PictureLogin
 
-![Build Status](https://github.com/Lythrilla/PictureLogin-master/actions/workflows/build.yml/badge.svg)
-![Spigot Version](https://img.shields.io/badge/Spigot-1.21.5-orange.svg)
-![License](https://img.shields.io/github/license/Lythrilla/PictureLogin-master)
+![构建状态](https://github.com/Lythrilla/PictureLogin-master/actions/workflows/build.yml/badge.svg)
+![Spigot版本](https://img.shields.io/badge/Spigot-1.21.5-orange.svg)
+![许可证](https://img.shields.io/github/license/Lythrilla/PictureLogin-master)
+![bStats](https://img.shields.io/bstats/servers/25388?label=服务器)
 
 ## 简介
 

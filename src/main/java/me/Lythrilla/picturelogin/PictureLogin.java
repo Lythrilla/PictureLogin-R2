@@ -58,7 +58,6 @@ public class PictureLogin extends JavaPlugin {
 
 		// bStats integration
 		if (configManager.getBoolean("metrics", true)) {
-			// bStats ID: 25388 (Lythrilla的官方ID)
 			new Metrics(this, 25388);
 		}
 			
