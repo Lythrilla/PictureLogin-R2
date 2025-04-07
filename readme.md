@@ -66,8 +66,6 @@ Permission | Description
 `picturelogin.debug` | Allows using debug commands (Default: OP)
 `picturelogin.group.vip` | Custom message permission for VIP players (Default: No)
 `picturelogin.group.admin` | Custom message permission for admins (Default: OP)
-`picturelogin.effect.rainbow` | Rainbow effect permission (Default: No)
-`picturelogin.effect.gradient` | Gradient effect permission (Default: No)
 
 ## 🖥️ Commands
 
