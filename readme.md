@@ -12,7 +12,7 @@
 
 ## 📝 Introduction
 
-PictureLogin is an enhanced Spigot/Bukkit plugin that displays custom messages with player skin images when players log into the server. This fork extends the original plugin with numerous additional features and improved performance.
+PictureLogin is an Spigot/Bukkit plugin that displays custom messages with player skin images when players log into the server. This fork extends the original plugin with numerous additional features and improved performance.
 
 > **Original Author**: Nathan Glover (NathanG/ItsNathanG)  
 > **Fork Author**: Lythrilla
