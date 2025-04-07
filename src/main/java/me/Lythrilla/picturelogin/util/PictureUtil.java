@@ -28,16 +28,16 @@ public class PictureUtil {
 	private final PictureLogin plugin;
 	private ConfigManager config;
 	
-	// 缓存玩家的ASCII头像行
+	// Cache for player ASCII avatar lines
 	private final Map<UUID, String[]> avatarLinesCache = new HashMap<>();
-	// 缓存过期时间（毫秒）
-	private static final long CACHE_EXPIRE_TIME = 60000; // 1分钟
-	// 缓存最后更新时间
+	// Cache expiration time (milliseconds)
+	private static final long CACHE_EXPIRE_TIME = 1600000; 
+	// Cache last update time
 	private final Map<UUID, Long> cacheLastUpdate = new HashMap<>();
-	// 添加离线玩家头像缓存
+	// Add offline player avatar cache
 	private final Map<String, String[]> offlinePlayerAvatarCache = new HashMap<>();
 	private final Map<String, Long> offlinePlayerCacheLastUpdate = new HashMap<>();
-	// 用于标记正在加载中的离线玩家
+	// For marking offline players that are currently loading
 	private final Map<String, Boolean> loadingOfflinePlayers = new HashMap<>();
 
 	public PictureUtil(PictureLogin plugin) {
@@ -48,37 +48,37 @@ public class PictureUtil {
 	private URL newURL(String player_uuid, String player_name) {
 		String url;
 		
-		// 检查服务器是否为离线模式
+		// Check if server is in offline mode
 		boolean isOfflineMode = !Bukkit.getServer().getOnlineMode();
 		
-		// SkinsRestorer集成
+		// SkinsRestorer integration
 		if (Hooks.SKINSRESTORER && PictureLogin.skinsRestorerAPI != null) {
 			try {
 				var skinData = PictureLogin.skinsRestorerAPI.getSkinStorage().findSkinData(player_name);
 				if (skinData.isPresent()) {
-					// 如果有SkinsRestorer数据，使用皮肤值
+					// If SkinsRestorer data exists, use the skin value
 					return new URL("https://minepic.org/avatar/8/" + skinData.get().getProperty().getValue());
 				}
 			} catch (Exception e) {
-				plugin.getLogger().warning("获取SkinsRestorer皮肤数据时出错: " + e.getMessage());
-				// 出错时继续使用常规URL
+				plugin.getLogger().warning("Error getting SkinsRestorer skin data: " + e.getMessage());
+				// Continue with regular URL on error
 			}
 		}
 		
-		// 使用配置文件中的URL，根据服务器模式替换变量
+		// Use URL from config file, replace variables based on server mode
 		url = config.getURL();
 		
 		if (isOfflineMode) {
-			// 离线模式优先使用玩家名
+			// Offline mode prioritizes player name
 			url = url.replace("%pname%", player_name);
-			// 如果URL中有%uuid%但没有%pname%，用玩家名替换%uuid%
+			// If URL contains %uuid% but not %pname%, replace %uuid% with player name
 			if (url.contains("%uuid%") && !url.contains("%pname%")) {
 				url = url.replace("%uuid%", player_name);
 			} else {
 				url = url.replace("%uuid%", player_uuid);
 			}
 		} else {
-			// 在线模式正常替换
+			// Online mode normal replacement
 			url = url.replace("%uuid%", player_uuid)
 				   .replace("%pname%", player_name);
 		}
@@ -86,7 +86,7 @@ public class PictureUtil {
 		try {
 			return new URL(url);
 		} catch (Exception e) {
-			plugin.getLogger().warning("无法解析头像URL: " + e.getMessage());
+			plugin.getLogger().warning("Unable to parse avatar URL: " + e.getMessage());
 			return null;
 		}
 	}
@@ -100,12 +100,12 @@ public class PictureUtil {
             	//User-Agent is needed for HTTP requests
             	HttpURLConnection connection = (HttpURLConnection) head_image.openConnection();
             	connection.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36");
-                connection.setConnectTimeout(5000); // 5秒连接超时
-                connection.setReadTimeout(5000);    // 5秒读取超时
+                connection.setConnectTimeout(5000); // 5 second connection timeout
+                connection.setReadTimeout(5000);    // 5 second read timeout
                 
                 int responseCode = connection.getResponseCode();
                 if (responseCode != 200) {
-                    plugin.getLogger().warning(tl("error_retrieving_avatar") + " - 服务器返回状态码: " + responseCode + " URL: " + head_image);
+                    plugin.getLogger().warning(tl("error_retrieving_avatar") + " - Server returned status code: " + responseCode + " URL: " + head_image);
                     return null;
                 }
                 
@@ -113,7 +113,7 @@ public class PictureUtil {
             } catch (Exception e) {
             	String errorMsg = e.getMessage();
             	if (errorMsg == null) errorMsg = e.getClass().getName();
-                plugin.getLogger().warning(tl("error_retrieving_avatar") + " - 原因: " + errorMsg + " URL: " + head_image);
+                plugin.getLogger().warning(tl("error_retrieving_avatar") + " - Reason: " + errorMsg + " URL: " + head_image);
             }
 		} else {
 		    plugin.getLogger().warning(tl("error_avatar_url_null"));
@@ -126,7 +126,7 @@ public class PictureUtil {
 		} catch (Exception e) {
 			String errorMsg = e.getMessage();
 			if (errorMsg == null) errorMsg = e.getClass().getName();
-			plugin.getLogger().warning(tl("error_fallback_img") + " - 原因: " + errorMsg);
+			plugin.getLogger().warning(tl("error_fallback_img") + " - Reason: " + errorMsg);
 			return null;
 		}
 	}
@@ -153,19 +153,19 @@ public class PictureUtil {
 	// String Utility Functions
 
 	/**
-	 * 添加消息中的占位符
+	 * Add placeholders to messages
 	 *
-	 * @param msg 待处理的消息
-	 * @param player 玩家实例
-	 * @return 添加了占位符的消息
+	 * @param msg Message to process
+	 * @param player Player instance
+	 * @return Message with placeholders replaced
 	 */
 	public String addPlaceholders(String msg, Player player) {
 		if (msg == null) return "";
 		
-		// 检查是否为MiniMessage格式
+		// Check if it's MiniMessage format
 		boolean isMiniMessage = msg.startsWith("<") && msg.contains(">");
 		
-		// 替换常规占位符
+		// Replace regular placeholders
 		msg = msg.replace("%player%", player.getName());
 		msg = msg.replace("%pname%", player.getName());
 		msg = msg.replace("%uuid%", player.getUniqueId().toString());
@@ -174,12 +174,12 @@ public class PictureUtil {
 		msg = msg.replace("%motd%", plugin.getServer().getMotd());
 		msg = msg.replace("%displayname%", player.getDisplayName());
 		
-		// 添加PlaceholderAPI支持
+		// Add PlaceholderAPI support
 		if (Hooks.PLACEHOLDER_API && Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
 			msg = PlaceholderAPI.setPlaceholders(player, msg);
 		}
 		
-		// 如果不是MiniMessage格式，使用传统的颜色代码处理
+		// If not MiniMessage format, use traditional color codes
 		if (!isMiniMessage) {
 			msg = ChatColor.translateAlternateColorCodes('&', msg);
 		}
@@ -188,13 +188,13 @@ public class PictureUtil {
 	}
 	
 	/**
-	 * 将MiniMessage格式转换为传统颜色代码
+	 * Convert MiniMessage format to legacy color codes
 	 * 
-	 * @param input MiniMessage格式的文本
-	 * @return 传统颜色代码格式的文本
+	 * @param input Text in MiniMessage format
+	 * @return Text in legacy color code format
 	 */
 	private String convertMiniMessageToLegacy(String input) {
-		// 简单转换一些常见的MiniMessage标签
+		// Simple conversion of common MiniMessage tags
 		input = input.replace("<gray>", "&7");
 		input = input.replace("</gray>", "&r");
 		input = input.replace("<yellow>", "&e");
@@ -216,13 +216,13 @@ public class PictureUtil {
 		input = input.replace("<black>", "&0");
 		input = input.replace("</black>", "&r");
 		
-		// 将渐变和彩虹效果转换为简单的颜色
+		// Convert gradient and rainbow effects to simple colors
 		input = input.replaceAll("<gradient:[^>]*>", "&e");
 		input = input.replace("</gradient>", "&r");
 		input = input.replace("<rainbow>", "&e");
 		input = input.replace("</rainbow>", "&r");
 		
-		// 转换后处理传统颜色代码
+		// Process traditional color codes after conversion
 		input = ChatColor.translateAlternateColorCodes('&', input);
 		
 		return input;
@@ -235,58 +235,58 @@ public class PictureUtil {
 	}
 
 	/**
-	 * 获取玩家ASCII头像的指定行
+	 * Get a specified line of the player's ASCII avatar
 	 * 
-	 * @param player 玩家对象
-	 * @param lineNumber 行号（从1开始）
-	 * @return 头像的指定行，如果无效则返回空字符串
+	 * @param player Player object
+	 * @param lineNumber Line number (starting from 1)
+	 * @return The specified line of the avatar, empty string if invalid
 	 */
 	public String getAvatarLine(Player player, int lineNumber) {
-		// 确保行号有效
+		// Ensure line number is valid
 		if (lineNumber < 1) {
 			return "";
 		}
 		
-		// 检查缓存是否存在且有效
+		// Check if cache exists and is valid
 		UUID playerUUID = player.getUniqueId();
 		if (avatarLinesCache.containsKey(playerUUID) && 
 			System.currentTimeMillis() - cacheLastUpdate.getOrDefault(playerUUID, 0L) < CACHE_EXPIRE_TIME) {
 			String[] lines = avatarLinesCache.get(playerUUID);
 			if (lineNumber <= lines.length) {
 				String line = lines[lineNumber - 1];
-				// 确保颜色代码被正确处理
+				// Ensure color codes are properly processed
 				return ChatColor.translateAlternateColorCodes('&', line);
 			}
 			return "";
 		}
 		
-		// 生成新的头像
+		// Generate new avatar
 		BufferedImage image = getImage(player);
 		if (image == null) {
 			return "";
 		}
 		
-		// 创建图像消息
+		// Create image message
 		ImageMessage imageMessage = new ImageMessage(image, 8, ImageChar.BLOCK.getChar());
 		String[] lines = imageMessage.getLines();
 		
-		// 缓存结果
+		// Cache the result
 		avatarLinesCache.put(playerUUID, lines);
 		cacheLastUpdate.put(playerUUID, System.currentTimeMillis());
 		
-		// 返回请求的行
+		// Return the requested line
 		if (lineNumber <= lines.length) {
 			String line = lines[lineNumber - 1];
-			// 确保颜色代码被正确处理
+			// Ensure color codes are properly processed
 			return ChatColor.translateAlternateColorCodes('&', line);
 		}
 		return "";
 	}
 	
 	/**
-	 * 清除玩家的头像缓存
+	 * Clear avatar cache for a player
 	 * 
-	 * @param player 要清除缓存的玩家
+	 * @param player Player to clear cache for
 	 */
 	public void clearAvatarCache(Player player) {
 		UUID playerUUID = player.getUniqueId();
@@ -295,7 +295,7 @@ public class PictureUtil {
 	}
 	
 	/**
-	 * 清除所有缓存
+	 * Clear all caches
 	 */
 	public void clearAllAvatarCaches() {
 		avatarLinesCache.clear();
@@ -306,26 +306,26 @@ public class PictureUtil {
 	}
 
 	/**
-	 * 异步获取头像的指定行
+	 * Asynchronously get a specified line of avatar
 	 * 
-	 * @param playerName 玩家名
-	 * @param lineNumber 行号（从1开始）
-	 * @return 头像的指定行，如果无效则返回空字符串
+	 * @param playerName Player name
+	 * @param lineNumber Line number (starting from 1)
+	 * @return The specified line of the avatar, empty string if invalid
 	 */
 	public String getAvatarLineByName(String playerName, int lineNumber) {
-		// 尝试从在线玩家中找到指定玩家
+		// Try to find the specified player from online players
 		Player player = Bukkit.getPlayer(playerName);
 		if (player != null) {
-			// 如果玩家在线，直接使用现有方法
+			// If player is online, use the existing method
 			return getAvatarLine(player, lineNumber);
 		}
 		
-		// 确保行号有效
+		// Ensure line number is valid
 		if (lineNumber < 1) {
 			return "";
 		}
 		
-		// 检查离线玩家缓存是否存在且有效
+		// Check if offline player cache exists and is valid
 		String lowerPlayerName = playerName.toLowerCase();
 		if (offlinePlayerAvatarCache.containsKey(lowerPlayerName) && 
 		    System.currentTimeMillis() - offlinePlayerCacheLastUpdate.getOrDefault(lowerPlayerName, 0L) < CACHE_EXPIRE_TIME) {
@@ -337,12 +337,12 @@ public class PictureUtil {
 			return "";
 		}
 		
-		// 如果正在加载中，返回临时提示符
+		// If currently loading, return a temporary prompt
 		if (Boolean.TRUE.equals(loadingOfflinePlayers.get(lowerPlayerName))) {
 			return "&7Loading...";
 		}
 		
-		// 异步获取头像
+		// Asynchronously get the avatar
 		loadingOfflinePlayers.put(lowerPlayerName, true);
 		
 		Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
@@ -399,7 +399,6 @@ public class PictureUtil {
 				
 				// Loading complete
 				loadingOfflinePlayers.remove(lowerPlayerName);
-				plugin.getLogger().info("Successfully loaded player avatar asynchronously: " + playerName);
 			} catch (Exception e) {
 				// Remove loading flag if exception occurs
 				loadingOfflinePlayers.remove(lowerPlayerName);
