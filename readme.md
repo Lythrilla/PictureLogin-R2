@@ -153,7 +153,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 <div align="center">
 
-[GitHub仓库](https://github.com/Lythrilla/PictureLogin) | [问题反馈](https://github.com/Lythrilla/PictureLogin/issues) | [原始插件](https://github.com/ItsNathanG/PictureLogin)
+[GitHub](https://github.com/Lythrilla/PictureLogin) | [Issue](https://github.com/Lythrilla/PictureLogin/issues) | [Oldest](https://github.com/ItsNathanG/PictureLogin)
 
 </div>
 

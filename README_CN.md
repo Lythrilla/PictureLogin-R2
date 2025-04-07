@@ -145,6 +145,9 @@ PictureLogin是一个Spigot/Bukkit插件，当玩家登录服务器时，会展�
 
 本项目采用MIT许可证 - 详见[LICENSE](LICENSE)文件。
 
-## 🙏 致谢
+<div align="center">
 
-感谢所有为本项目做出贡献的人！ 
+[GitHub仓库](https://github.com/Lythrilla/PictureLogin) | [问题反馈](https://github.com/Lythrilla/PictureLogin/issues) | [原始插件](https://github.com/ItsNathanG/PictureLogin)
+
+</div>
+
