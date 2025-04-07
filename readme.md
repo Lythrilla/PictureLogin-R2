@@ -2,165 +2,148 @@
 
 <div align="center">
 
+<div align="center">
+  <img src="https://i.imgur.com/kNW94py.png">
+</div>
 
-![许可证](https://img.shields.io/github/license/ItsNathanG/PictureLogin)
-
+[English](README.md) | [中文](README_CN.md)
 
 </div>
 
-## 📝 简介
+## 📝 Introduction
 
-PictureLogin是一个增强版的Spigot/Bukkit插件，当玩家登录服务器时，会展示包含玩家皮肤图像的自定义消息。本分支在原插件的基础上扩展了众多额外功能并改进了性能。
+PictureLogin is an enhanced Spigot/Bukkit plugin that displays custom messages with player skin images when players log into the server. This fork extends the original plugin with numerous additional features and improved performance.
 
-> **原作者**: Nathan Glover (NathanG/ItsNathanG)  
-> **分支作者**: Lythrilla
+> **Original Author**: Nathan Glover (NathanG/ItsNathanG)  
+> **Fork Author**: Lythrilla
 
-## ✨ 功能特色
+## ✨ Features
 
-### 🚀 核心功能
-* 在聊天栏中显示玩家皮肤的ASCII艺术图像
-* 可自定义的欢迎消息
-* 玩家首次加入的特殊消息
-* 离开服务器消息
-* PlaceholderAPI集成
-* AuthMe集成
+### 🚀 Core Features
+* Display player skin ASCII art in the chat bar
+* Customizable welcome messages
+* Special messages for first-time joiners
+* Leave server messages
+* PlaceholderAPI integration
+* AuthMe integration
 
-### 🔥 增强功能
-* **多语言支持** - 内置支持多种语言（默认包含英语和中文）
-* **在线预览** - 无需重新连接即可在游戏中直接预览登录消息
-* **基于权限的消息** - 根据权限组分配不同的登录消息
-* **玩家特定消息** - 为特定玩家设置独特的消息
-* **命令控制** - 通过命令启用/禁用功能
-* **MiniMessage支持** - 使用Adventure API的MiniMessage格式进行现代文本格式化
-* **SkinRestorer集成** - 正确显示来自SkinRestorer的自定义皮肤
-* **账户类型检测** - 自动检测并处理正版/离线Minecraft账户
-* **PAPI变量** - 支持头像PlaceholderAPI变量
-* **Legacy颜色支持** - 与传统颜色代码向后兼容
+### 🔥 Enhanced Features
+* **Multi-language Support** - Built-in support for multiple languages (English and Chinese included by default)
+* **Online Preview** - Preview login messages in-game without reconnecting
+* **Permission-based Messages** - Assign different login messages based on permission groups
+* **Player-specific Messages** - Set unique messages for specific players
+* **Command Control** - Enable/disable features through commands
+* **MiniMessage Support** - Use Adventure API's MiniMessage format for modern text formatting
+* **SkinRestorer Integration** - Correctly display custom skins from SkinRestorer
+* **Account Type Detection** - Automatically detect and handle premium/offline Minecraft accounts
+* **PAPI Variables** - Support for avatar PlaceholderAPI variables
+* **Legacy Color Support** - Backward compatibility with traditional color codes
 
-## 📋 要求
+## 📋 Requirements
 
-* Java 17或更高版本
-* Spigot/Paper 1.20或更高版本
-* (可选) PlaceholderAPI - 用于使用其他插件的变量
-* (可选) AuthMe - 用于登录集成
-* (可选) SkinRestorer - 用于自定义皮肤支持
-* (可选) PremiumVanish - 用于玩家隐身兼容
+* Java 17 or higher
+* Spigot/Paper 1.20 or higher
+* (Optional) PlaceholderAPI - For using variables from other plugins
+* (Optional) AuthMe - For login integration
+* (Optional) SkinRestorer - For custom skin support
+* (Optional) PremiumVanish - For player invisibility compatibility
 
-## 📥 安装
+## 📥 Installation
 
-1. 从[Releases](https://github.com/Lythrilla/PictureLogin/releases)下载最新的JAR文件
-2. 将JAR文件放入服务器的`plugins`文件夹
-3. 重启服务器或重新加载插件
-4. 在`plugins/PictureLogin/config.yml`中配置插件
+1. Download the latest JAR file from [Releases](https://github.com/Lythrilla/PictureLogin/releases)
+2. Place the JAR file in your server's `plugins` folder
+3. Restart the server or reload the plugin
+4. Configure the plugin in `plugins/PictureLogin/config.yml`
 
-## 🔑 权限
+## 🔑 Permissions
 
-权限 | 描述
+Permission | Description
 --- | ---
-`picturelogin.use` | 允许使用PictureLogin命令（默认: 所有人）
-`picturelogin.show` | 允许玩家看到登录消息（默认: 所有人）
-`picturelogin.reload` | 允许重载PictureLogin插件配置（默认: OP）
-`picturelogin.language` | 允许更改插件语言（默认: OP）
-`picturelogin.debug` | 允许使用调试命令（默认: OP）
-`picturelogin.group.vip` | VIP玩家的自定义消息权限（默认: 否）
-`picturelogin.group.admin` | 管理员的自定义消息权限（默认: OP）
-`picturelogin.effect.rainbow` | 彩虹特效权限（默认: 否）
-`picturelogin.effect.gradient` | 渐变特效权限（默认: 否）
+`picturelogin.use` | Allows using PictureLogin commands (Default: Everyone)
+`picturelogin.show` | Allows players to see login messages (Default: Everyone)
+`picturelogin.reload` | Allows reloading PictureLogin plugin configuration (Default: OP)
+`picturelogin.language` | Allows changing plugin language (Default: OP)
+`picturelogin.debug` | Allows using debug commands (Default: OP)
+`picturelogin.group.vip` | Custom message permission for VIP players (Default: No)
+`picturelogin.group.admin` | Custom message permission for admins (Default: OP)
+`picturelogin.effect.rainbow` | Rainbow effect permission (Default: No)
+`picturelogin.effect.gradient` | Gradient effect permission (Default: No)
 
-## 🖥️ 命令
+## 🖥️ Commands
 
-命令 | 描述
+Command | Description
 --- | ---
-`/picturelogin reload` | 重新加载配置
-`/picturelogin language [lang]` | 查看或更改语言
-`/picturelogin version` | 显示版本信息
-`/picturelogin help` | 显示帮助信息
-`/picturelogin debug <login\|leave\|firstjoin\|all> [global\|user\|perm] [名称]` | 调试不同类型的消息
+`/picturelogin reload` | Reload configuration
+`/picturelogin language [lang]` | View or change language
+`/picturelogin version` | Display version information
+`/picturelogin help` | Display help information
+`/picturelogin debug <login\|leave\|firstjoin\|all> [global\|user\|perm] [name]` | Debug different types of messages
 
-**别名**: `/piclogin`, `/plogin`, `/pl`
+**Aliases**: `/piclogin`, `/plogin`, `/pl`
 
-## 🌐 多语言支持
+## 🌐 Multi-language Support
 
-本插件支持多语言系统，语言文件位于`plugins/PictureLogin/lang/`目录。默认提供以下语言：
+This plugin supports a multi-language system, with language files located in the `plugins/PictureLogin/lang/` directory. The following languages are provided by default:
 
-* 英文 (en_US.yml)
-* 中文 (zh_CN.yml)
+* English (en_US.yml)
+* Chinese (zh_CN.yml)
 
-您可以复制这些文件并创建自己的翻译。
+You can copy these files and create your own translations.
 
-## 🔌 PlaceholderAPI变量
+## 🔌 PlaceholderAPI Variables
 
-本插件提供以下PlaceholderAPI变量用于在其他插件中显示玩家头像：
+This plugin provides the following PlaceholderAPI variables for displaying player avatars in other plugins:
 
-### 当前玩家头像变量
+### Current Player Avatar Variables
 ```
-%picturelogin_avatar_1% - 当前玩家头像第1行
-%picturelogin_avatar_2% - 当前玩家头像第2行
-%picturelogin_avatar_3% - 当前玩家头像第3行
-%picturelogin_avatar_4% - 当前玩家头像第4行
-%picturelogin_avatar_5% - 当前玩家头像第5行
-%picturelogin_avatar_6% - 当前玩家头像第6行
-%picturelogin_avatar_7% - 当前玩家头像第7行
-%picturelogin_avatar_8% - 当前玩家头像第8行
+%picturelogin_avatar_1% - Current player avatar line 1
+%picturelogin_avatar_2% - Current player avatar line 2
+%picturelogin_avatar_3% - Current player avatar line 3
+%picturelogin_avatar_4% - Current player avatar line 4
 ```
 
-### 指定玩家头像变量
+### Other Player Avatar Variables
 ```
-%picturelogin_player_avatar_玩家名_1% - 指定玩家头像第1行
-%picturelogin_player_avatar_玩家名_2% - 指定玩家头像第2行
-%picturelogin_player_avatar_玩家名_3% - 指定玩家头像第3行
-%picturelogin_player_avatar_玩家名_4% - 指定玩家头像第4行
-%picturelogin_player_avatar_玩家名_5% - 指定玩家头像第5行
-%picturelogin_player_avatar_玩家名_6% - 指定玩家头像第6行
-%picturelogin_player_avatar_玩家名_7% - 指定玩家头像第7行
-%picturelogin_player_avatar_玩家名_8% - 指定玩家头像第8行
+%picturelogin_avatar_1_<player>% - Avatar line 1 of specified player
+%picturelogin_avatar_2_<player>% - Avatar line 2 of specified player
+%picturelogin_avatar_3_<player>% - Avatar line 3 of specified player
+%picturelogin_avatar_4_<player>% - Avatar line 4 of specified player
 ```
 
-## 🇨🇳 中英文配置文件
+## 🎨 Message Formatting
 
-插件默认使用英文配置文件`config.yml`。如果您想使用中文配置，可以将`config_cn.yml`的内容复制到`config.yml`中
+This plugin supports multiple text formatting methods:
 
-```yaml
-language: "zh_CN"
+### MiniMessage Format
+```
+<gradient:red:blue>This is a gradient text</gradient>
+<rainbow>This is a rainbow text</rainbow>
+<color:gold>This is a gold text</color>
 ```
 
-配置文件中的注释说明也会相应地使用中文或英文。
-
-## 🎨 MiniMessage支持
-
-本插件支持Adventure的MiniMessage格式，这是一种现代、灵活的文本格式化系统。您可以在消息中使用所有MiniMessage标签。
-
-示例：
-
+### Legacy Color Codes
 ```
-- '<yellow>欢迎来到 <gradient:green:blue:red>服务器</gradient>!'
-- '<rainbow>这是彩虹文字</rainbow>'
+&6This is a gold text
+&bThis is a aqua text
 ```
 
-## 🎭 Legacy颜色支持
+## ⚙️ Configuration
 
-对于使用旧版插件或配置的服务器，也支持传统颜色代码：
+The plugin configuration is located at `plugins/PictureLogin/config.yml`. You can customize:
 
-```
-- '&e欢迎来到 &a服务器&e!'
-- '&c这是带颜色的文字'
-```
+* Message formats
+* Avatar appearance
+* Effect settings
+* Permission group messages
+* Player-specific messages
 
-## 🔧 构建
+## 🤝 Contributing
 
-要从源代码构建此插件：
+Contributions are welcome! Please feel free to submit a Pull Request.
 
-```bash
-git clone https://github.com/Lythrilla/PictureLogin.git
-cd PictureLogin
-./gradlew build
-```
+## 📄 License
 
-构建后的jar将位于`build/libs/`目录中。
-
-## 📜 许可证
-
-本项目采用MIT许可证 - 详见[LICENSE](https://github.com/ItsNathanG/PictureLogin/blob/master/LICENSE)文件。
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## 🙏 致谢
 
