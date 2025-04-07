@@ -145,10 +145,6 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## 🙏 致谢
-
-特别感谢Nathan Glover (ItsNathanG)创建了这个优秀的原始插件。
-
 ---
 
 <div align="center">
