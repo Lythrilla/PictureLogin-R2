@@ -16,17 +16,40 @@ public class LanguageManager {
     private final ConfigManager configManager;
     private YamlConfiguration langConfig;
     private String currentLanguage;
+    private List<String> availableLanguages = new ArrayList<>();
+    private boolean languagesLoaded = false;
 
     public LanguageManager(PictureLogin plugin, ConfigManager configManager) {
         this.plugin = plugin;
         this.configManager = configManager;
+        
+        // 确保语言文件目录存在
+        ensureLanguageFilesExist();
+        
+        // 加载语言列表
+        loadLanguages();
+        
+        // 设置当前语言
+        String language = configManager.getString("language", "en_US");
+        setLanguage(language);
+        
+        plugin.getLogger().info(getLogMessage("log_language_manager_init", "%language%", currentLanguage));
     }
 
     public void reloadLanguage() {
-        currentLanguage = configManager.getString("language", "en_US");
-        // 确保语言文件目录存在并包含默认语言文件
-        ensureLanguageFilesExist();
-        langConfig = getLanguageConfig(currentLanguage);
+        try {
+            // 重新加载语言列表
+            this.availableLanguages = getAvailableLanguages();
+            
+            // 重新加载当前语言
+            String language = configManager.getString("language", "en_US");
+            setLanguage(language);
+            
+            plugin.getLogger().info(getLogMessage("log_language_changed", "%language%", currentLanguage));
+        } catch (Exception e) {
+            plugin.getLogger().severe("重新加载语言文件时出错: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -36,7 +59,7 @@ public class LanguageManager {
         File langDir = new File(plugin.getDataFolder(), "lang");
         if (!langDir.exists()) {
             langDir.mkdirs();
-            plugin.getLogger().info("创建语言文件目录: " + langDir.getPath());
+            plugin.getLogger().info(getLogMessage("log_creating_lang_dir", "%path%", langDir.getPath()));
         }
 
         // 复制内置语言文件
@@ -45,12 +68,12 @@ public class LanguageManager {
 
         if (!enFile.exists()) {
             plugin.saveResource("lang/en_US.yml", false);
-            plugin.getLogger().info("创建英文语言文件: " + enFile.getPath());
+            plugin.getLogger().info(getLogMessage("log_creating_en_file", "%path%", enFile.getPath()));
         }
 
         if (!zhFile.exists()) {
             plugin.saveResource("lang/zh_CN.yml", false);
-            plugin.getLogger().info("创建中文语言文件: " + zhFile.getPath());
+            plugin.getLogger().info(getLogMessage("log_creating_zh_file", "%path%", zhFile.getPath()));
         }
     }
 
@@ -64,7 +87,9 @@ public class LanguageManager {
         File langFile = new File(plugin.getDataFolder(), "lang" + File.separator + lang + ".yml");
         
         if (!langFile.exists()) {
-            plugin.getLogger().log(Level.WARNING, "找不到语言文件: " + lang + ".yml, 使用英语(en_US)作为默认语言");
+            plugin.getLogger().log(Level.WARNING, getLogMessage("log_language_not_found", 
+                new String[] {"%language%", "%default%"}, 
+                new String[] {lang, "en_US"}));
             
             // 尝试提取默认语言文件
             ensureLanguageFilesExist();
@@ -77,29 +102,49 @@ public class LanguageManager {
 
         // 加载语言文件
         YamlConfiguration config = YamlConfiguration.loadConfiguration(langFile);
-        plugin.getLogger().info("已加载语言文件: " + lang);
+        plugin.getLogger().fine("已加载语言文件: " + lang); // 使用fine级别减少日志输出
         return config;
     }
 
-    public void setLanguage(String lang) {
-        // 检查语言是否存在
-        YamlConfiguration config = getLanguageConfig(lang);
-        if (config != null) {
-            currentLanguage = lang;
-            langConfig = config;
-            
-            // 保存到配置文件
-            FileConfiguration pluginConfig = plugin.getConfig();
-            pluginConfig.set("language", lang);
-            try {
-                pluginConfig.save(new File(plugin.getDataFolder(), "config.yml"));
-                plugin.getLogger().info("语言已更改为: " + lang);
-            } catch (IOException e) {
-                plugin.getLogger().log(Level.SEVERE, "无法保存配置文件", e);
-            }
-        } else {
-            plugin.getLogger().warning("找不到语言: " + lang);
+    /**
+     * 设置当前语言
+     * 
+     * @param language 语言代码
+     */
+    public void setLanguage(String language) {
+        // 检查语言是否改变，如果没有改变则不重新加载
+        if (this.currentLanguage != null && this.currentLanguage.equals(language)) {
+            plugin.getLogger().info("语言未改变，仍为: " + language);
+            return;
         }
+        
+        // 检查语言是否可用
+        List<String> availableLanguages = getAvailableLanguages();
+        if (!availableLanguages.contains(language)) {
+            plugin.getLogger().warning(getLogMessage("log_language_not_found", 
+                new String[] {"%language%", "%default%"}, 
+                new String[] {language, "en_US"}));
+            language = "en_US";
+        }
+        
+        // 保存新的语言设置到配置文件
+        try {
+            File configFile = new File(plugin.getDataFolder(), "config.yml");
+            YamlConfiguration config = YamlConfiguration.loadConfiguration(configFile);
+            config.set("language", language);
+            config.save(configFile);
+        } catch (Exception e) {
+            plugin.getLogger().warning("无法保存语言设置: " + e.getMessage());
+        }
+        
+        // 更新当前语言和配置
+        this.currentLanguage = language;
+        this.langConfig = getLanguageConfig(language);
+        
+        // 确保语言列表已加载
+        loadLanguages();
+        
+        plugin.getLogger().info(getLogMessage("log_language_changed", "%language%", language));
     }
 
     public String getCurrentLanguage() {
@@ -107,10 +152,17 @@ public class LanguageManager {
     }
 
     public String getMessage(String key) {
+        // 防止无限递归，如果langConfig为null则使用英文默认消息
         if (langConfig == null) {
-            reloadLanguage();
+            // 直接加载默认英文配置而不是调用reloadLanguage
+            langConfig = getLanguageConfig("en_US");
+            if (langConfig == null) {
+                // 如果仍然不能加载，返回键名以避免进一步的问题
+                return key;
+            }
         }
 
+        // 从当前语言配置获取消息
         String message = langConfig.getString(key);
         
         // 如果在当前语言中找不到，尝试从英语中获取
@@ -119,8 +171,24 @@ public class LanguageManager {
             message = enConfig.getString(key);
         }
         
-        // 如果仍然为null，返回键名
-        return message != null ? message : key;
+        // 如果仍然为null，记录警告并返回键名
+        if (message == null) {
+            plugin.getLogger().warning("找不到语言键: " + key + " 在语言 " + currentLanguage);
+            return key;
+        }
+        
+        // 处理前缀变量替换
+        if (message.contains("%prefix%")) {
+            String prefix = langConfig.getString("prefix");
+            if (prefix != null) {
+                message = message.replace("%prefix%", prefix);
+            }
+        }
+        
+        // 处理其他基本变量
+        message = message.replace("%new_line%", "\n");
+        
+        return message;
     }
 
     public List<String> getAvailableLanguages() {
@@ -144,5 +212,96 @@ public class LanguageManager {
         }
         
         return languages;
+    }
+
+    /**
+     * 检查指定的语言是否可用
+     * 
+     * @param language 要检查的语言代码
+     * @return 如果语言可用则返回true，否则返回false
+     */
+    public boolean isLanguageAvailable(String language) {
+        return availableLanguages.contains(language);
+    }
+
+    public void loadLanguages() {
+        if (!languagesLoaded) {
+            this.availableLanguages = getAvailableLanguages();
+            languagesLoaded = true;
+            plugin.getLogger().info(getLogMessage("log_languages_loaded", "%languages%", this.availableLanguages.toString()));
+        }
+    }
+    
+    /**
+     * 获取本地化的日志消息
+     * 
+     * @param key 消息键
+     * @param placeholder 占位符
+     * @param value 替换值
+     * @return 本地化的消息
+     */
+    private String getLogMessage(String key, String placeholder, String value) {
+        // 防止无限递归
+        if (langConfig == null) {
+            // 如果未加载，使用硬编码的消息返回
+            return key + ": " + value;
+        }
+        
+        // 直接从配置获取消息而不调用getMessage
+        String message = langConfig.getString(key);
+        if (message == null) {
+            // 如果找不到消息，返回简单格式
+            return key + ": " + value;
+        }
+        
+        return message.replace(placeholder, value);
+    }
+    
+    /**
+     * 获取本地化的日志消息（多参数版本）
+     * 
+     * @param key 消息键
+     * @param placeholders 占位符数组
+     * @param values 替换值数组
+     * @return 本地化的消息
+     */
+    private String getLogMessage(String key, String[] placeholders, String[] values) {
+        if (placeholders.length != values.length) {
+            return key;
+        }
+        
+        // 防止无限递归
+        if (langConfig == null) {
+            // 如果未加载，构建简单的消息
+            StringBuilder result = new StringBuilder(key);
+            result.append(": ");
+            for (int i = 0; i < placeholders.length; i++) {
+                result.append(placeholders[i]).append("=").append(values[i]);
+                if (i < placeholders.length - 1) {
+                    result.append(", ");
+                }
+            }
+            return result.toString();
+        }
+        
+        // 直接从配置获取消息而不调用getMessage
+        String message = langConfig.getString(key);
+        if (message == null) {
+            // 如果找不到消息，返回简单格式
+            StringBuilder result = new StringBuilder(key);
+            result.append(": ");
+            for (int i = 0; i < placeholders.length; i++) {
+                result.append(placeholders[i]).append("=").append(values[i]);
+                if (i < placeholders.length - 1) {
+                    result.append(", ");
+                }
+            }
+            return result.toString();
+        }
+        
+        for (int i = 0; i < placeholders.length; i++) {
+            message = message.replace(placeholders[i], values[i]);
+        }
+        return message;
     }
 }

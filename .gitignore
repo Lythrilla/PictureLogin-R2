@@ -4,6 +4,7 @@
 out/
 src/META-INF/
 src/main/java/META-INF/
+build/
 
 # Maven
 target/

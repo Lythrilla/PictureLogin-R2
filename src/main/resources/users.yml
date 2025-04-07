@@ -1,0 +1,64 @@
+# PictureLogin 玩家配置文件
+# 在此配置文件中，您可以为特定玩家设置自定义消息
+# 玩家设置优先级高于权限组设置
+
+# 格式说明:
+# players:
+#   玩家名称或UUID:
+#     enabled: true/false  # 是否启用此玩家的自定义设置
+#     messages:  # 登录消息
+#       - '第一行消息'
+#       - '第二行消息'
+#     first-join-messages:  # 首次登录消息
+#       - '第一行消息'
+#       - '第二行消息'
+#     leave-messages:  # 离开消息
+#       - '第一行消息'
+#       - '第二行消息'
+
+players:
+  # 示例玩家1 - 使用UUID (推荐)
+  '00000000-0000-0000-0000-000000000000':
+    enabled: true
+    messages:
+      - ''
+      - '<gray>欢迎 <gradient:gold:yellow>VIP玩家</gradient> <green>%pname%</green> <gray>回到服务器!'
+      - '<gradient:red:yellow>★ 尊贵会员专属特效 ★</gradient>'
+      - '<gray>» 当前在线: [<yellow>%online%</yellow><gray>/<yellow>%max%</yellow><gray>] 玩家'
+      - ''
+      - '<green>您的VIP特权已激活!'
+      - ''
+    first-join-messages:
+      - ''
+      - '<gray>欢迎 <gradient:gold:yellow>VIP新玩家</gradient> <green>%pname%</green> <gray>加入服务器!'
+      - '<gold>感谢您支持我们的服务器!</gold>'
+      - '<gray>» 当前在线: [<yellow>%online%</yellow><gray>/<yellow>%max%</yellow><gray>] 玩家'
+      - ''
+      - '<green>VIP新手礼包已发放到您的背包!'
+      - ''
+    leave-messages:
+      - ''
+      - '<gradient:gold:yellow>VIP玩家</gradient> <green>%pname%</green> <gray>离开了服务器!'
+      - '<gray>» 当前在线: [<yellow>%online%</yellow><gray>/<yellow>%max%</yellow><gray>] 玩家'
+      - ''
+    sound:
+      enabled: true
+      sound: "ENTITY_EXPERIENCE_ORB_PICKUP"
+      volume: 1.0
+      pitch: 1.5
+  
+  # 示例玩家2 - 使用玩家名
+  'Lythrilla':
+    enabled: true
+    messages:
+      - ''
+      - '<rainbow>欢迎服务器创建者回来!</rainbow>'
+      - '<gray>创建者 <aqua>Lythrilla</aqua> <gray>已上线!'
+      - '<gray>» 当前在线: [<yellow>%online%</yellow><gray>/<yellow>%max%</yellow><gray>] 玩家'
+      - ''
+    first-join-messages: []  # 空列表表示使用默认设置
+    leave-messages:
+      - ''
+      - '<red>服务器创建者已离线!</red>'
+      - '<gray>» 当前在线: [<yellow>%online%</yellow><gray>/<yellow>%max%</yellow><gray>] 玩家'
+      - '' 

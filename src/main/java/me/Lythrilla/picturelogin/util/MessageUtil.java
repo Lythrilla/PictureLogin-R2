@@ -46,45 +46,50 @@ public class MessageUtil {
     /**
      * 将传统的颜色格式转换为MiniMessage格式
      * 
-     * @param legacyText 传统颜色格式文本
-     * @return MiniMessage格式文本
+     * @param text 待转换的文本
+     * @return 转换后的文本
      */
-    public static String legacyToMiniMessage(String legacyText) {
-        if (legacyText == null) return "";
+    public static String legacyToMiniMessage(String text) {
+        if (text == null) return "";
+        
+        // 如果已经是MiniMessage格式，直接返回
+        if (text.startsWith("<") && text.contains(">")) {
+            return text;
+        }
         
         // 处理Hex颜色
-        legacyText = HEX_PATTERN.matcher(legacyText).replaceAll("<#$1>");
+        text = HEX_PATTERN.matcher(text).replaceAll("<#$1>");
         
         // 替换&为§以便稍后处理
-        legacyText = ChatColor.translateAlternateColorCodes('&', legacyText);
+        text = ChatColor.translateAlternateColorCodes('&', text);
         
         // 替换传统颜色代码为MiniMessage格式
-        legacyText = legacyText.replace("§0", "<black>");
-        legacyText = legacyText.replace("§1", "<dark_blue>");
-        legacyText = legacyText.replace("§2", "<dark_green>");
-        legacyText = legacyText.replace("§3", "<dark_aqua>");
-        legacyText = legacyText.replace("§4", "<dark_red>");
-        legacyText = legacyText.replace("§5", "<dark_purple>");
-        legacyText = legacyText.replace("§6", "<gold>");
-        legacyText = legacyText.replace("§7", "<gray>");
-        legacyText = legacyText.replace("§8", "<dark_gray>");
-        legacyText = legacyText.replace("§9", "<blue>");
-        legacyText = legacyText.replace("§a", "<green>");
-        legacyText = legacyText.replace("§b", "<aqua>");
-        legacyText = legacyText.replace("§c", "<red>");
-        legacyText = legacyText.replace("§d", "<light_purple>");
-        legacyText = legacyText.replace("§e", "<yellow>");
-        legacyText = legacyText.replace("§f", "<white>");
+        text = text.replace("§0", "<black>");
+        text = text.replace("§1", "<dark_blue>");
+        text = text.replace("§2", "<dark_green>");
+        text = text.replace("§3", "<dark_aqua>");
+        text = text.replace("§4", "<dark_red>");
+        text = text.replace("§5", "<dark_purple>");
+        text = text.replace("§6", "<gold>");
+        text = text.replace("§7", "<gray>");
+        text = text.replace("§8", "<dark_gray>");
+        text = text.replace("§9", "<blue>");
+        text = text.replace("§a", "<green>");
+        text = text.replace("§b", "<aqua>");
+        text = text.replace("§c", "<red>");
+        text = text.replace("§d", "<light_purple>");
+        text = text.replace("§e", "<yellow>");
+        text = text.replace("§f", "<white>");
         
         // 替换格式代码
-        legacyText = legacyText.replace("§l", "<bold>");
-        legacyText = legacyText.replace("§m", "<strikethrough>");
-        legacyText = legacyText.replace("§n", "<underlined>");
-        legacyText = legacyText.replace("§o", "<italic>");
-        legacyText = legacyText.replace("§k", "<obfuscated>");
-        legacyText = legacyText.replace("§r", "<reset>");
+        text = text.replace("§l", "<bold>");
+        text = text.replace("§m", "<strikethrough>");
+        text = text.replace("§n", "<underlined>");
+        text = text.replace("§o", "<italic>");
+        text = text.replace("§k", "<obfuscated>");
+        text = text.replace("§r", "<reset>");
         
-        return legacyText;
+        return text;
     }
 
     /**
@@ -97,7 +102,10 @@ public class MessageUtil {
     public static Component formatMessage(Player player, String message) {
         if (message == null) return Component.empty();
         
-        // 首先处理PlaceholderAPI变量
+        // 检查是否为MiniMessage格式
+        boolean isMiniMessage = message.startsWith("<") && message.contains(">");
+        
+        // 处理占位符
         if (Hooks.PLACEHOLDER_API) {
             message = PlaceholderAPI.setPlaceholders(player, message);
         }
@@ -110,11 +118,18 @@ public class MessageUtil {
         message = message.replace("%motd%", player.getServer().getMotd());
         message = message.replace("%displayname%", player.getDisplayName());
         
-        // 转换为MiniMessage格式
-        String miniMessageText = legacyToMiniMessage(message);
+        // 如果不是MiniMessage格式，转换为MiniMessage格式
+        if (!isMiniMessage) {
+            message = legacyToMiniMessage(message);
+        }
         
         // 解析MiniMessage
-        return miniMessage.deserialize(miniMessageText);
+        try {
+            return miniMessage.deserialize(message);
+        } catch (Exception e) {
+            // 如果解析失败，返回纯文本组件
+            return Component.text(ChatColor.translateAlternateColorCodes('&', message));
+        }
     }
 
     /**

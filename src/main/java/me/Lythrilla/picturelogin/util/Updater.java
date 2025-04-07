@@ -8,16 +8,30 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.logging.Logger;
 
+import me.Lythrilla.picturelogin.PictureLogin;
+import me.Lythrilla.picturelogin.config.LanguageManager;
+
 import static me.Lythrilla.picturelogin.util.Translate.tl;
 
 public class Updater {
 
      public Updater(Logger log, String currentVersion) {
         final String USER_AGENT = "PictureLogin Plugin";
-
+        
         try {
             // 暂时禁用更新检查，直到GitHub仓库有正式的releases
-            log.info("PictureLogin " + currentVersion + " - 更新检查已禁用");
+            if (PictureLogin.getInstance() != null && PictureLogin.getInstance().getConfigManager() != null) {
+                LanguageManager langManager = PictureLogin.getInstance().getConfigManager().getLanguageManager();
+                if (langManager != null) {
+                    log.info(langManager.getMessage("log_update_check_disabled").replace("%version%", currentVersion));
+                } else {
+                    // 直接使用英文默认语言
+                    log.info("PictureLogin " + currentVersion + " - Update check disabled");
+                }
+            } else {
+                // 直接使用英文默认语言
+                log.info("PictureLogin " + currentVersion + " - Update check disabled");
+            }
             
             // 如果需要在后期开启更新检查，可以取消下面的注释
             /*

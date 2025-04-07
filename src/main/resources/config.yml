@@ -23,7 +23,7 @@ language: "en_us"
 ########
 # 每一行代表一条消息，留空为空行
 # (如果图像高度为8，您最多可以设置8行消息)
-# 支持聊天颜色代码
+# 支持聊天颜色代码(&)和MiniMessage格式(<bold>, <gradient>, 等)
 ########
 # 可用变量:
 # %pname%       - 玩家名称 (无格式)
@@ -34,15 +34,20 @@ language: "en_us"
 ########
 # 注意: 如果安装了PlaceholderAPI插件
 #       您也可以使用其提供的所有变量
+########
+# MiniMessage示例:
+# - '<rainbow>欢迎光临我的服务器</rainbow>'
+# - '<gradient:red:blue>这是渐变文字</gradient>'
+# - '<yellow>黄色文字 <bold>加粗文字</bold></yellow>'
 
 messages:
     - ''
-    - '&7欢迎来到 &e&l我的服务器&7!'
+    - '<gray>欢迎来到 <yellow><bold>我的服务器</bold></yellow><gray>!'
+    - '<rainbow>★ VIP玩家专属效果 ★</rainbow>'
+    - '<gray>» 当前在线: [<yellow>%online%</yellow><gray>/<yellow>%max%</yellow><gray>] 玩家'
+    - '<gray>» <green>最新公告: </green><gray>已添加新功能!'
     - ''
-    - '&7» 当前在线: [&e%online%&7/&e%max%&7] 玩家'
-    - '&7» &a最新公告: &7已添加新功能!'
-    - ''
-    - '&7» &aPictureLogin &7插件 &a作者Lythrilla&NathanG&7'
+    - '<gradient:green:blue>» PictureLogin 插件 作者Lythrilla&NathanG</gradient>'
     - ''
 
 #############
@@ -56,12 +61,12 @@ show-first-join: true
 
 first-join-messages:
     - ''
-    - '&7欢迎来到 &e&l我的服务器&7!'
+    - '<gray>欢迎来到 <yellow><bold>我的服务器</bold></yellow><gray>!'
     - ''
-    - '&7» 当前在线: [&e%online%&7/&e%max%&7] 玩家'
-    - '&7» &a最新公告: &7已添加新功能!'
+    - '<gray>» 当前在线: [<yellow>%online%</yellow><gray>/<yellow>%max%</yellow><gray>] 玩家'
+    - '<gray>» <green>最新公告: </green><gray>已添加新功能!'
     - ''
-    - '&7请大家欢迎 &a%pname% &7加入服务器!'
+    - '<gray>请大家欢迎 <green>%pname% </green><gray>加入服务器!'
     - ''
 
 #############
@@ -75,12 +80,12 @@ show-leave-message: false
 
 leave-messages:
     - ''
-    - '&e%pname% &7离开了服务器!'
+    - '<yellow>%pname% </yellow><gray>离开了服务器!'
     - ''
-    - '&7» 当前在线: [&e%online%&7/&e%max%&7] 玩家'
-    - '&7» &a最新公告: &7已添加新功能!'
+    - '<gray>» 当前在线: [<yellow>%online%</yellow><gray>/<yellow>%max%</yellow><gray>] 玩家'
+    - '<gray>» <green>最新公告: </green><gray>已添加新功能!'
     - ''
-    - '&7» &aPictureLogin &7插件 &a作者Lythrilla&NathanG&7'
+    - '<gray>» <green>PictureLogin </green><gray>插件 <green>作者Lythrilla&NathanG</green><gray>'
     - ''
 
 #############
@@ -120,6 +125,24 @@ block-join-message: false
 block-leave-message: false
 
 #############
+# 登录音效
+########
+# 设置为true可在玩家登录时
+# 播放音效
+
+play-login-sound: true
+
+# 登录音效设置
+login-sound:
+  # 音效名称 (Minecraft原版音效名)
+  # 完整列表: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Sound.html
+  sound: "ENTITY_PLAYER_LEVELUP"
+  # 音量 (0.0 - 1.0)
+  volume: 1.0
+  # 音调 (0.5 - 2.0)
+  pitch: 1.0
+
+#############
 # 仅对玩家显示
 ########
 # 设置为true只向
@@ -145,7 +168,9 @@ character: 'BLOCK'
 ######## 
 # 获取玩家头像的URL
 # 默认使用minepic
-# 建议保持默认设置
+# 插件会根据服务器模式自动处理URL:
+# - 正版服务器: 使用玩家UUID
+# - 离线服务器: 自动使用玩家名称
 ########
 # 可用变量:
 # %uuid%   - 玩家UUID
@@ -153,8 +178,11 @@ character: 'BLOCK'
 
 url: 'https://minepic.org/avatar/8/%uuid%'
 
-# 离线服务器请使用此URL:
-# url: 'https://minepic.org/avatar/8/%pname%'
+# 注意: 如果您的服务器是离线模式，但URL中只有%uuid%变量，
+# 插件会自动将%uuid%替换为玩家名称
+
+# 如果您使用SkinsRestorer插件，且玩家有自定义皮肤，
+# 插件会自动使用该皮肤的数据获取头像
 
 #############
 # 异步处理
@@ -182,6 +210,7 @@ require-permission: true
 hooks:
   PlaceholderAPI: true
   AuthMe: true
+  SkinsRestorer: true
 
 #############
 # 更新检查
@@ -200,3 +229,34 @@ update-check: true
 # 设置为false可禁用
 
 metrics: true
+
+#############
+# 自定义消息系统
+########
+# 以下设置允许您为特定玩家或权限组设置自定义消息
+# 启用后，插件将检查users.yml和perms.yml中的配置
+
+# 启用基于玩家的自定义消息 (users.yml)
+enable-user-messages: true
+
+# 启用基于权限的自定义消息 (perms.yml)
+enable-permission-messages: true
+
+#############
+# 命令设置
+########
+# 以下设置允许您启用或禁用
+# 特定命令功能
+
+settings:
+  enable_commands:
+    reload: true
+    language:
+      language: true
+      set: true
+    debug: true
+
+# 消息优先级顺序 (从高到低):
+# 1. 玩家特定消息 (users.yml)
+# 2. 权限组消息 (perms.yml，按优先级排序)
+# 3. 默认消息 (此配置文件)

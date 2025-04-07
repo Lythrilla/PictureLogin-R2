@@ -4,22 +4,128 @@
 
 # Prefix can be used with %prefix%
 # New Line inserted with %new_line%
-prefix: "&aPictureLogin &7»"
+# Prefix options (uncomment the one you want to use):
+prefix: "&a&lPictureLogin &8» &r"
+# prefix: "&8&l| &b&lPictureLogin &8&l|&r "
+# prefix: "&3&l✦ &bPictureLogin &r"
+# prefix: "&b&l➤ &r"
+# prefix: "&7(&b&lPIC&7)&r "
 
-# Command Messages
-reload_config: "%prefix% Configuration successfully reloaded."
-reload_config_help: "%prefix% &a/picturelogin reload &7to reload the configuration file."
+# 📜 Command Messages
+reload_config: "%prefix% &aConfiguration successfully reloaded"
+reload_config_help: "%prefix% &e/picturelogin reload &7- to reload the configuration file"
+version_command_help: "%prefix% &e/picturelogin version &7- to view plugin version info"
+language_command_help: "%prefix% &e/picturelogin language <code> &7- to change the plugin language"
+help_command_help: "%prefix% &e/picturelogin help &7- to display command help"
+debug_command_help: "%prefix% &e/picturelogin debug <type> [player|permission] &7- to test messages"
 no_permission: "%prefix% &cYou do not have permission to do this!"
-version_info: "%prefix% Running version &a%version%&7."
-language_changed: "%prefix% Language changed to &a%language%&7."
+version_info: "%prefix% Running version &e%version%"
+language_changed: "%prefix% &aLanguage changed to &e%language%"
+invalid_language: "%prefix% &cLanguage &e%language% &cis not available. &7Available languages: &e%languages%"
 
-# Misc
-update_available: "New update available! Current Version: %current% New Version: %new%"
-update_available_download: "Download at https://github.com/Lythrilla/PictureLogin-master"
+# 📚 Help Menu
+help_header: "&8* &e&lPictureLogin Help &8*"
+help_footer: "&8* &e&lAll Commands Loaded &8*"
 
-# Error Messages (Printed in console.)
-error_reload_config: "Could not access the configuration file."
-error_retrieving_avatar: "Could not retrieve avatar from URL. Reverting to fallback image."
-error_fallback_img: "Could not load fallback image."
-error_update_check: "Could not check for update."
-error_language_not_found: "Language file %language% not found. Using default language." 
+# 🔮 Misc
+update_available: "%prefix% &eNew update available! Current Version: %current% New Version: %new%"
+update_available_download: "%prefix% &7Download at &ehttps://github.com/Lythrilla/PictureLogin-master"
+
+# 🛡️ Error Messages (Printed in console.)
+error_reload_config: "%prefix% &cCould not access the configuration file"
+error_retrieving_avatar: "%prefix% &cCould not retrieve avatar from URL. Reverting to fallback image"
+error_fallback_img: "%prefix% &cCould not load fallback image"
+error_update_check: "%prefix% &cCould not check for update"
+error_language_not_found: "%prefix% &cLanguage file %language% not found. Using default language"
+error_avatar_url_null: "%prefix% &cAvatar URL is null"
+using_fallback_img: "%prefix% &7Using fallback image"
+
+# 🧪 Plugin Messages
+plugin_enabled: '&aPlugin enabled!'
+plugin_disabled: '&cPlugin disabled!'
+config_reloaded: '&aConfiguration file reloaded!'
+
+# ⚠ Error Messages
+error_loading_config: '&cError loading configuration file!'
+error_loading_languages: '&cError loading language files!'
+
+# 👤 Player Messages
+player_not_found: '%prefix% &cPlayer &e%s&c not found'
+command_usage: '%prefix% &7Usage: &e%s'
+must_be_player: '%prefix% &cOnly players can execute this command'
+messages_set: '%prefix% &aCustom &e%s &amessages set for player &e%s&a'
+messages_cleared: '%prefix% &a&e%s &amessages cleared for player &e%s&a'
+messages_not_found: '%prefix% &cNo message configuration found for player &e%s&c'
+
+# 🔨 Command Descriptions
+command_reload_desc: 'Reload configuration files'
+command_version_desc: 'View plugin version info'
+command_language_desc: 'Change plugin language'
+command_help_desc: 'Display help information'
+command_debug_desc: 'Test different message types'
+
+# 📢 Message Types
+message_type_login: 'Login'
+message_type_firstjoin: 'First Join'
+message_type_leave: 'Leave'
+
+# 🌐 Language Settings
+current_language: "%prefix% &7Current Language: &e%language%"
+available_languages: "%prefix% &7Available Languages: &e%languages%"
+language_usage: "%prefix% &7Use &e/picturelogin language <code> &7to change language"
+language_list_header: "&8* &e&lPictureLogin Language Settings &8*"
+language_list_footer: "&8* &e&lSelect Your Preferred Language &8*"
+
+# 📜 Log Messages
+log_creating_lang_dir: "Creating language directory: %path%"
+log_creating_en_file: "Creating English language file: %path%"
+log_creating_zh_file: "Creating Chinese language file: %path%"
+log_languages_loaded: "Languages loaded: %languages%"
+log_language_not_found: "Language file not found: %language%, using default: %default%"
+log_language_changed: "Language changed to: %language%"
+log_language_manager_init: "Language manager initialized, current language: %language%"
+log_players_loaded: "Loaded %count% custom player message configurations"
+log_permissions_loaded: "Loaded %count% permission group message configurations"
+log_permission_save_error: "Could not save perms.yml: %error%"
+log_user_save_error: "Could not save users.yml: %error%"
+log_update_check_disabled: "PictureLogin %version% - Update check disabled"
+log_update_check_enabled: "PictureLogin %version% - Checking for updates..."
+log_plugin_enabled: "PictureLogin v%version% enabled successfully!"
+log_plugin_disabled: "PictureLogin disabled!"
+log_plugin_reloaded: "Plugin configuration reloaded!"
+log_url_error: "Could not read picture url from config.yml!"
+log_papi_registered: "Registered PictureLogin placeholders, use %picturelogin_avatar_1% to %picturelogin_avatar_8% to display ASCII avatars"
+log_adventure_error: "Attempted to access Adventure API when the plugin is not initialized or is disabled"
+
+# 🐛 Debug Command
+debug_invalid_type: "%prefix% &cInvalid message type &e%type%&c. Valid types: &elogin, leave, firstjoin, all"
+debug_message_header: "%prefix% &e%type% &7message test: &e%target%"
+debug_message_footer: "%prefix% &7Message test completed!"
+debug_user_not_found: "%prefix% &cPlayer configuration not found: &e%name%"
+debug_group_not_found: "%prefix% &cPermission group configuration not found: &e%name%"
+debug_permission_message: "%prefix% &7Permission group message: &e%group%"
+debug_user_message: "%prefix% &7Player message: &e%player%"
+debug_global_message: "%prefix% &7Global message"
+
+# 📋 Command Help
+command_help_header: "&8=== &6PictureLogin &fCommands &8==="
+command_version_syntax: "&f/picturelogin version"
+command_version_desc: "&7View the plugin version"
+command_reload_syntax: "&f/picturelogin reload" 
+command_reload_desc: "&7Reload the plugin configuration"
+command_language_syntax: "&f/picturelogin language [lang]"
+command_language_desc: "&7View or change the plugin language"
+command_debug_syntax: "&f/picturelogin debug <login|leave|firstjoin|all> [global|user|perm] [name]"
+command_debug_desc: "&7Debug message configuration"
+command_disabled: "&cThis command is disabled in the configuration."
+
+# 🔍 Debug Help
+debug_command_help: "&6Usage: &f/picturelogin debug <login|leave|firstjoin|all> [global|user|perm] [name]"
+debug_invalid_type: "&cInvalid message type. Use: login, leave, firstjoin, or all"
+debug_message_header: "&8=== &6PictureLogin &fDebug Information &8==="
+debug_message_footer: "&8=== &6End of Debug Information &8==="
+debug_user_not_found: "&cUser configuration for &f%player% &cnot found."
+debug_group_not_found: "&cPermission group &f%group% &cnot found."
+debug_permission_message: "&7Group: &f%group% &7| Permission: &f%permission% &7| Priority: &f%priority%"
+debug_user_message: "&7Player: &f%player%"
+debug_global_message: "&7Global Configuration"

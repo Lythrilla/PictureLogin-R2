@@ -1,19 +1,50 @@
 name: PictureLogin
+version: '${version}'
 main: me.Lythrilla.picturelogin.PictureLogin
-api-version: 1.21
-author: lythrilla
-description: 显示带有玩家皮肤图像的炫酷登录消息
-
-version: ${version}
-softdepend: [AuthMe, PlaceholderAPI]
+authors: [Lythrilla, NathanG]
+api-version: '1.16'
+softdepend: [PlaceholderAPI, AuthMe, SkinsRestorer, PremiumVanish]
 
 commands:
   picturelogin:
-    description: PictureLogin插件命令
-permisions:
-  picturelogin.main:
-    default: op
-    description: 允许使用/picturelogin命令
+    description: PictureLogin插件主命令
+    usage: /picturelogin <reload|version|language|help|debug>
+    aliases: [piclogin, plogin, pl]
+    permission: picturelogin.use
+
+permissions:
+  picturelogin.use:
+    description: 允许使用PictureLogin命令
+    default: true
+  
   picturelogin.show:
+    description: 允许玩家看到登录消息
+    default: true
+  
+  picturelogin.reload:
+    description: 允许重载PictureLogin插件配置
     default: op
-    description: 允许显示登录消息
+    
+  picturelogin.language:
+    description: 允许更改插件语言
+    default: op
+    
+  picturelogin.debug:
+    description: 允许使用调试命令
+    default: op
+    
+  picturelogin.group.vip:
+    description: VIP玩家的自定义消息权限
+    default: false
+    
+  picturelogin.group.admin:
+    description: 管理员的自定义消息权限
+    default: op
+    
+  picturelogin.effect.rainbow:
+    description: 彩虹特效权限
+    default: false
+    
+  picturelogin.effect.gradient:
+    description: 渐变特效权限
+    default: false

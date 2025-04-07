@@ -1,0 +1,125 @@
+# PictureLogin 权限组配置文件
+# 在此配置文件中，您可以为拥有特定权限的玩家组设置自定义消息
+# 权限优先级由priority决定，数值越高优先级越高
+# 如果玩家同时拥有多个权限，将使用优先级最高的权限组消息
+
+# 格式说明:
+# groups:
+#   权限组名称:
+#     permission: "权限节点"  # 玩家需要拥有的权限
+#     priority: 数字         # 优先级，数字越高优先级越高
+#     enabled: true/false   # 是否启用此权限组
+#     messages:             # 登录消息
+#       - '第一行消息'
+#       - '第二行消息'
+#     first-join-messages:  # 首次登录消息
+#       - '第一行消息'
+#       - '第二行消息'
+#     leave-messages:       # 离开消息
+#       - '第一行消息'
+#       - '第二行消息'
+#     sound:              # 登录音效设置
+#       enabled: true     # 是否启用
+#       sound: "音效名称"  # 音效名称
+#       volume: 1.0       # 音量
+#       pitch: 1.0        # 音调
+
+groups:
+  # VIP玩家权限组
+  vip:
+    permission: "picturelogin.group.vip"
+    priority: 10
+    enabled: true
+    messages:
+      - ''
+      - '<gradient:green:aqua>VIP玩家 %player% 已登录服务器!</gradient>'
+      - '<gray>当前在线: [<yellow>%online%</yellow><gray>/<yellow>%max%</yellow><gray>] 玩家'
+      - ''
+    first-join-messages:
+      - ''
+      - '<gray>欢迎 <gradient:gold:yellow>VIP新玩家</gradient> <green>%pname%</green> <gray>加入服务器!'
+      - '<gold>感谢您支持我们的服务器!</gold>'
+      - '<gray>» 当前在线: [<yellow>%online%</yellow><gray>/<yellow>%max%</yellow><gray>] 玩家'
+      - ''
+      - '<green>VIP新手礼包已发放到您的背包!</green>'
+      - ''
+    leave-messages:
+      - ''
+      - '<gradient:gold:yellow>VIP玩家</gradient> <green>%pname%</green> <gray>离开了服务器!'
+      - '<gray>» 当前在线: [<yellow>%online%</yellow><gray>/<yellow>%max%</yellow><gray>] 玩家'
+      - ''
+    sound:
+      enabled: true
+      sound: "ENTITY_PLAYER_LEVELUP"
+      volume: 0.8
+      pitch: 1.2
+  
+  # 管理员权限组
+  admin:
+    permission: "picturelogin.group.admin"
+    priority: 20  # 优先级高于VIP
+    enabled: true
+    messages:
+      - ''
+      - '<red>管理员 <gold>%pname%</gold> <red>已上线!</red>'
+      - '<yellow>服务器现在由管理员监督中</yellow>'
+      - '<gray>» 当前在线: [<yellow>%online%</yellow><gray>/<yellow>%max%</yellow><gray>] 玩家'
+      - ''
+    first-join-messages:
+      - ''
+      - '<red>新管理员 <gold>%pname%</gold> <red>已加入!</red>'
+      - '<yellow>欢迎新管理员的到来!</yellow>'
+      - '<gray>» 当前在线: [<yellow>%online%</yellow><gray>/<yellow>%max%</yellow><gray>] 玩家'
+      - ''
+    leave-messages:
+      - ''
+      - '<red>管理员 <gold>%pname%</gold> <red>已离线!</red>'
+      - '<gray>» 当前在线: [<yellow>%online%</yellow><gray>/<yellow>%max%</yellow><gray>] 玩家'
+      - ''
+    sound:
+      enabled: true
+      sound: "ENTITY_ENDER_DRAGON_GROWL"
+      volume: 0.5
+      pitch: 1.0
+  
+  # 彩虹特效权限组
+  rainbow:
+    permission: "picturelogin.effect.rainbow"
+    priority: 5  # 低优先级效果
+    enabled: true
+    messages:
+      - ''
+      - '<rainbow>欢迎 %pname% 回到服务器!</rainbow>'
+      - '<gray>» 当前在线: [<yellow>%online%</yellow><gray>/<yellow>%max%</yellow><gray>] 玩家'
+      - ''
+    first-join-messages:
+      - ''
+      - '<rainbow>欢迎新玩家 %pname% 加入服务器!</rainbow>'
+      - '<gray>» 当前在线: [<yellow>%online%</yellow><gray>/<yellow>%max%</yellow><gray>] 玩家'
+      - ''
+    leave-messages:
+      - ''
+      - '<rainbow>%pname% 离开了服务器!</rainbow>'
+      - '<gray>» 当前在线: [<yellow>%online%</yellow><gray>/<yellow>%max%</yellow><gray>] 玩家'
+      - ''
+      
+  # 渐变特效权限组
+  gradient:
+    permission: "picturelogin.effect.gradient"
+    priority: 5  # 与彩虹效果同级
+    enabled: true
+    messages:
+      - ''
+      - '<gradient:blue:aqua:green>欢迎 %pname% 回到服务器!</gradient>'
+      - '<gray>» 当前在线: [<yellow>%online%</yellow><gray>/<yellow>%max%</yellow><gray>] 玩家'
+      - ''
+    first-join-messages:
+      - ''
+      - '<gradient:blue:aqua:green>欢迎新玩家 %pname% 加入服务器!</gradient>'
+      - '<gray>» 当前在线: [<yellow>%online%</yellow><gray>/<yellow>%max%</yellow><gray>] 玩家'
+      - ''
+    leave-messages:
+      - ''
+      - '<gradient:blue:aqua:green>%pname% 离开了服务器!</gradient>'
+      - '<gray>» 当前在线: [<yellow>%online%</yellow><gray>/<yellow>%max%</yellow><gray>] 玩家'
+      - '' 
