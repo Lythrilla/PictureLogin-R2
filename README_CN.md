@@ -66,8 +66,6 @@ PictureLogin是一个Spigot/Bukkit插件，当玩家登录服务器时，会展�
 `picturelogin.debug` | 允许使用调试命令（默认: OP）
 `picturelogin.group.vip` | VIP玩家的自定义消息权限（默认: 否）
 `picturelogin.group.admin` | 管理员的自定义消息权限（默认: OP）
-`picturelogin.effect.rainbow` | 彩虹特效权限（默认: 否）
-`picturelogin.effect.gradient` | 渐变特效权限（默认: 否）
 
 ## 🖥️ 命令
 
