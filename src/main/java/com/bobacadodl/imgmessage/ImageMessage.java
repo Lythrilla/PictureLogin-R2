@@ -172,7 +172,9 @@ public class ImageMessage {
     public String[] getLines() {
         return lines;
     }
-
+/**
+ 我不喜欢你的固执和任性，
+ */
     public void sendToPlayer(Player player) {
         for (String line : lines) {
             player.sendMessage(line);
