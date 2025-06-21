@@ -119,7 +119,7 @@ public class PictureLogin extends JavaPlugin {
 
 		// bStats integration
 		if (configManager.getBoolean("metrics", true)) {
-			new Metrics(this, 15033);
+			new Metrics(this, 25388);
 		}
 			
 		// 输出插件启动信息
